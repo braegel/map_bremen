@@ -1,0 +1,152 @@
+# map definition file
+# -------------------
+# general hint for this yaml config file:
+# - do not use tabs or unnecessary white spaces
+#
+# useful links:
+# - https://github.com/mapnik/mapnik/wiki/SymbologySupport
+# - http://mapnik.org/mapnik-reference
+#
+# basic symbolizers:
+# - LinePatternSymbolizer (https://github.com/mapnik/mapnik/wiki/LinePatternSymbolizer)
+# - LineSymbolizer (https://github.com/mapnik/mapnik/wiki/LineSymbolizer)
+# - MarkersSymbolizer (https://github.com/mapnik/mapnik/wiki/MarkersSymbolizer)
+# - PointSymbolizer (https://github.com/mapnik/mapnik/wiki/PointSymbolizer)
+# - PolygonPatternSymbolizer (https://github.com/mapnik/mapnik/wiki/PolygonPatternSymbolizer)
+# - PolygonSymbolizer (https://github.com/mapnik/mapnik/wiki/PolygonSymbolizer)
+# - TextSymbolizer (https://github.com/mapnik/mapnik/wiki/TextSymbolizer)
+#
+# advanced symbolizers:
+# - BuildingSymbolizer (https://github.com/mapnik/mapnik/wiki/BuildingSymbolizer)
+# - RasterSymbolizer (https://github.com/mapnik/mapnik/wiki/RasterSymbolizer)
+# - ShieldSymbolizer (https://github.com/mapnik/mapnik/wiki/ShieldSymbolizer)
+#
+# purpose: Printable map of Bremen, Germany
+# author : Bernd Brägelmann
+# release: 
+#
+# frame (2 + 18 = bleed + frame):
+# printmaps passepartout 420.0 594.0 20.0 20.0 20.0 20.0
+#
+# crop marks:
+# printmaps cropmarks 420.0 594.0 5.0
+#
+# scalebar:
+# printmaps bearingline 53.49777 9.93321 90.0 1000.0 "1000 Meter" scalebar-1000
+
+# service configuration
+# ---------------------
+
+# URL of webservice
+ServiceURL: http://printmaps-osm.de:8282/api/beta2/maps/
+
+# proxy configuration (not to be done here)
+# - set the environment variable $HTTP_PROXY on your local system 
+# - e.g. export HTTP_PROXY=http://user:password@proxy.server:port
+
+# essential map attributes (required)
+# -----------------------------------
+
+# file format (currently only png)
+Fileformat: png
+
+# scale as in "1:10000" (e.g. 10000, 25000)
+Scale: 25000
+
+# width and height (millimeter, e.g. 609.6)
+PrintWidth: 594
+PrintHeight: 840
+
+# center coordinates (decimal degrees, e.g. 51.9506)
+Latitude: 53.0845277667
+# Longitude: 8.8076667 Zentrumn
+Longitude: 8.75
+
+# style / design (osm-carto, osm-carto-mono, osm-carto-ele20, schwarzplan, schwarzplan+, raster10)
+# raster10 (no map data): useful for placing / styling the user map elements
+# request the service capabilities to get a list of all available map styles
+Style: osm-carto
+
+# map projection, EPSG code as number (without prefix "EPSG:")
+# e.g. 3857 (EPSG:3857 / WGS84 / Web Mercator) (used by Google/Bing/OpenStreetMap)
+# e.g. 32632 (EPSG:32632 / WGS 84 / UTM Zone 32N)
+# e.g. 27700 (EPSG:27700 / OSGB 1936 / British National Grid)
+# e.g. 2056 (EPSG:2056 / CH1903+ / LV95)
+Projection: 3857
+
+# advanced map attributes (optional)
+# ----------------------------------
+
+# layers to hide (see service capabilities for possible values)
+# e.g. hide admin borders: admin-low-zoom,admin-mid-zoom,admin-high-zoom,admin-text
+# e.g. hide nature reserve borders: nature-reserve-boundaries,nature-reserve-text
+# e.g. hide tourism borders (theme park, zoo): tourism-boundary
+# e.g. hide highway shields: roads-text-ref-low-zoom,roads-text-ref
+HideLayers: admin-low-zoom,admin-mid-zoom,admin-high-zoom,admin-text
+
+# user defined objects (optional, draw order remains)
+# ---------------------------------------------------
+#
+# data object defined by ...
+# style: object style
+# srs: spatial reference system (is always '+init=epsg:4326' for gpx and kml)
+# type: type of data source (ogr, shape, gdal, csv)
+# file: name of data objects file
+# layer: data layer to extract (only required for ogr)
+#
+# item object defined by ...
+# style: object style
+# well-known-text: object definition
+#
+# well-known-text:
+#   POINT, LINESTRING, POLYGON, MULTIPOINT, MULTILINESTRING, MULTIPOLYGON
+#   all values are in millimeter (reference X0 Y0: lower left map corner)
+#
+# font sets:
+#   fontset-0: Noto Fonts normal
+#   fontset-1: Noto Fonts italic
+#   fontset-2: Noto Fonts bold
+
+UserObjects:
+
+#- Style: <LineSymbolizer stroke='firebrick' stroke-width='8' stroke-linecap='round' />
+#  SRS: '+init=epsg:4326'
+#  Type: ogr
+#  File: mytrack.gpx
+#  Layer: tracks
+
+# scale bar (use always stroke-linecap='butt')
+#- Style: |
+#         <LineSymbolizer stroke='dimgray' stroke-width='4.0' stroke-linecap='butt' />
+#         <TextSymbolizer fontset-name='fontset-2' size='12' fill='dimgray' halo-radius='1' halo-fill='rgba(255, 255, 255, 0.6)' placement='line' dy='-6' allow-overlap='true'>[name]</TextSymbolizer>
+#  SRS: '+init=epsg:4326'
+#  Type: ogr
+#  File: scalebar-1000.geojson
+#  Layer: OGRGeoJSON
+
+# frame
+#- Style: <PolygonSymbolizer fill='white' fill-opacity='1.0' /> 
+#  WellKnownText: POLYGON((0.0 0.0, 0.0 594.0, 420.0 594.0, 420.0 0.0, 0.0 0.0), (20.0 20.0, 20.0 574.0, 400.0 574.0, 400.0 20.0, 20.0 20.0))
+
+# border (around map area)
+#- Style: <LineSymbolizer stroke='dimgray' stroke-width='1.0' stroke-linecap='square' />
+#  WellKnownText: LINESTRING(20.0 20.0, 20.0 574.0, 400.0 574.0, 400.0 20.0, 20.0 20.0)
+
+# crop marks (only the half line width is visible)
+#- Style: <LineSymbolizer stroke='dimgray' stroke-width='1.5' stroke-linecap='square' />
+#  WellKnownText: MULTILINESTRING((5.0 0.0, 0.0 0.0, 0.0 5.0), (5.0 594.0, 0.0 594.0, 0.0 589.0), (415.0 594.0, 420.0 594.0, 420.0 589.0), (415.0 0.0, 420.0 0.0, 420.0 5.0))
+
+# title
+#- Style: <TextSymbolizer fontset-name='fontset-2' size='150' fill='dimgray' opacity='0.3' allow-overlap='true'>'H A M B U R G'</TextSymbolizer>
+#  WellKnownText: POINT(210.0 510.0)
+
+# copyright
+- Style: <TextSymbolizer fontset-name='fontset-0' size='12' fill='dimgray' orientation='90' allow-overlap='true'>'© OpenStreetMap contributors'</TextSymbolizer>
+  WellKnownText: POINT(10.0 297)
+
+# user files to upload
+# --------------------
+
+UserFiles:
+#- mytrack.gpx
+#- scalebar-1000.geojson
